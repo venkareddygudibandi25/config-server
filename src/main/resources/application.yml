@@ -12,13 +12,25 @@
 ##        native:
 ##          search-locations: file:///d:/GVR/Microservice/config-repo
 #
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8070/eureka/
-#  instance:
-#    prefer-ip-address: true
+# --- SERVICE DISCOVERY SETTINGS ---
+# Here we configure the Config Server to act as a Eureka Client, 
+# registering itself with the Eureka Server we set up on port 8070.
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8070/eureka/
+  instance:
+    # Uses the IP address instead of the hostname for registration. 
+    # This is helpful in environments like Docker where hostnames might not resolve easily.
+    prefer-ip-address: true
 #    
+# --- ENCRYPTION/DECRYPTION SETTINGS ---
+# This symmetric key is used by the Config Server to encrypt and decrypt sensitive properties
+# (like database passwords) stored in the GitHub repository. Properties starting with '{cipher}'
+# will be automatically decrypted before being sent to the microservices.
+encrypt:
+  key: "SpsoftSymmetricCryptoKey"
+
 server:
   port: 8888
 
@@ -29,10 +41,12 @@ spring:
   cloud:
     config:
       server:
+        # --- GIT REPOSITORY SETTINGS ---
+        # The Config Server connects to this GitHub repository to fetch configuration files.
         git:
           uri: https://github.com/venkareddygudibandi25/banking-config-repo
-          default-label: main
-          clone-on-start: true
+          default-label: main          # The branch to fetch configurations from (usually main or master)
+          clone-on-start: true         # Clones the repo immediately when the server starts, rather than waiting for the first request
 
 management:
   endpoints:

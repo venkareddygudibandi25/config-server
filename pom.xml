@@ -35,13 +35,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+		<!-- ACTUATOR: Provides the /actuator/busrefresh endpoint used to trigger config refreshes -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<!-- SPRING CLOUD BUS KAFKA: Integrates the config server with Kafka to broadcast refresh events to all microservices -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bus-kafka</artifactId>
+		</dependency>
+		<!-- CONFIG MONITOR: Provides the /monitor endpoint. When GitHub sends a webhook to this endpoint on a push event, 
+		     it automatically triggers the Kafka Bus to refresh all microservices. -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-monitor</artifactId>
 		</dependency>
     </dependencies>
     
